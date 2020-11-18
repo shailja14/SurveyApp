@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SurveyList changes 1`] = `
+<div
+  className="row justify-content-center"
+>
+  <div
+    className="table-responsive"
+  >
+    <table
+      className="table table-striped table-bordered table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Name
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Accessibility
+          </th>
+          <th>
+            Is Active
+          </th>
+          <th>
+            Created By
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+  </div>
+  <div
+    align="center"
+    className="inline-errormsg"
+    margin="10px"
+  />
+</div>
+`;
