@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: survey-be-$ENVIRONMENT
+    namespace: $ENVIRONMENT
+    labels:
+        app: survey-be-$ENVIRONMENT
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: survey-be-$ENVIRONMENT
+    template:
+        metadata:
+            labels:
+                app: survey-be-$ENVIRONMENT
+        spec:
+            containers:
+                - name: survey-be-$ENVIRONMENT
+                  image: address of latest image on EKS/survey-be:$ENVIRONMENT-latest
+                  imagePullPolicy: Always
+                  resources:
+                      requests:
+                          cpu: 500m
+                          memory: 200Mi
+                  env:
+                      - name: DB_URI
+                        value: 'mongodb://localhost/surveyDB'
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: 'survey-be-$ENVIRONMENT'
+    namespace: $ENVIRONMENT
+spec:
+    ports:
+        - name: survey-be-app
+          port: 8008
+          targetPort: 9860
+          protocol: TCP
+    type: NodePort
+    selector:
+        app: 'survey-be-$ENVIRONMENT'
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+    name: survey-be-$ENVIRONMENT
+    namespace: $ENVIRONMENT
+spec:
+    scaleTargetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: survey-be-$ENVIRONMENT
+    minReplicas: 1
+    maxReplicas: 10
+    metrics:
+        - type: Resource
+          resource:
+              name: cpu
+              targetAverageUtilization: 50
+        - type: Resource
+          resource:
+              name: memory
+              targetAverageUtilization: 70
