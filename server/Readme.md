@@ -10,3 +10,6 @@ Make sure you have
 ```
 npm install && npm start
 ```
+## Environment Variables
+You can create .env file for the same and add DB_URI else by default it will point to 'mongodb://localhost/surveyDB' uri for DB connection.
+PORT, default is 5000
